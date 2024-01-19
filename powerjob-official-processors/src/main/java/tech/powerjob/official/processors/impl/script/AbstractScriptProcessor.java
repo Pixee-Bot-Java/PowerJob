@@ -1,5 +1,6 @@
 package tech.powerjob.official.processors.impl.script;
 
+import io.github.pixee.security.BoundedLineReader;
 import tech.powerjob.worker.common.utils.PowerFileUtils;
 import tech.powerjob.worker.core.processor.ProcessResult;
 import tech.powerjob.worker.core.processor.TaskContext;
@@ -142,7 +143,7 @@ public abstract class AbstractScriptProcessor extends CommonBasicProcessor {
     private void copyStream(InputStream is, StringBuilder sb, OmsLogger omsLogger, Charset charset) {
         String line;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is, charset))) {
-            while ((line = br.readLine()) != null) {
+            while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
                 sb.append(line).append(System.lineSeparator());
                 // 同步到在线日志
                 omsLogger.info(line);
