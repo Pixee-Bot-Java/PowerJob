@@ -1,5 +1,7 @@
 package tech.powerjob.server.web.controller;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import tech.powerjob.common.enums.InstanceStatus;
 import tech.powerjob.common.response.ResultDTO;
 import tech.powerjob.server.common.utils.OmsFileUtils;
@@ -100,7 +102,7 @@ public class InstanceController {
         File logFile = new File(logFilePath);
 
         try {
-            FileUtils.copyURLToFile(new URL(downloadUrl), logFile);
+            FileUtils.copyURLToFile(Urls.create(downloadUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), logFile);
 
             // 再推送到浏览器
             OmsFileUtils.file2HttpResponse(logFile, response);
