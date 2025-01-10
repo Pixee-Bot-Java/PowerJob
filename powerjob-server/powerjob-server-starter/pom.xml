@@ -47,6 +47,10 @@
             <groupId>tech.powerjob</groupId>
             <artifactId>powerjob-server-migrate</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.pixee</groupId>
+            <artifactId>java-security-toolkit</artifactId>
+        </dependency>
     </dependencies>
 
     <!-- SpringBoot maven plugin -->
