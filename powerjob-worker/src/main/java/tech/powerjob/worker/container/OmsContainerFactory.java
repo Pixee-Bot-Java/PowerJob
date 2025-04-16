@@ -1,5 +1,7 @@
 package tech.powerjob.worker.container;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import tech.powerjob.common.model.DeployedContainerInfo;
 import tech.powerjob.common.request.ServerDeployContainerRequest;
 import tech.powerjob.common.request.WorkerNeedDeployContainerRequest;
@@ -93,7 +95,7 @@ public class OmsContainerFactory {
         try {
             if (!jarFile.exists()) {
                 FileUtils.forceMkdirParent(jarFile);
-                FileUtils.copyURLToFile(new URL(request.getDownloadURL()), jarFile, 5000, 300000);
+                FileUtils.copyURLToFile(Urls.create(request.getDownloadURL(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), jarFile, 5000, 300000);
                 log.info("[OmsContainer-{}] download jar successfully, path={}", containerId, jarFile.getPath());
             }
 
