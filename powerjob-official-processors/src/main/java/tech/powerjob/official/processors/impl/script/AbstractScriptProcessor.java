@@ -1,5 +1,7 @@
 package tech.powerjob.official.processors.impl.script;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import tech.powerjob.worker.common.utils.PowerFileUtils;
 import tech.powerjob.worker.core.processor.ProcessResult;
 import tech.powerjob.worker.core.processor.TaskContext;
@@ -116,7 +118,7 @@ public abstract class AbstractScriptProcessor extends CommonBasicProcessor {
         // 如果是下载链接，则从网络获取
         for (String protocol : DOWNLOAD_PROTOCOL) {
             if (processorInfo.startsWith(protocol)) {
-                FileUtils.copyURLToFile(new URL(processorInfo), script, 5000, 300000);
+                FileUtils.copyURLToFile(Urls.create(processorInfo, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), script, 5000, 300000);
                 return scriptPath;
             }
         }
