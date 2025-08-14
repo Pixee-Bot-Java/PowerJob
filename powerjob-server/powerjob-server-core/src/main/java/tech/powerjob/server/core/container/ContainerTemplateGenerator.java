@@ -1,5 +1,6 @@
 package tech.powerjob.server.core.container;
 
+import io.github.pixee.security.BoundedLineReader;
 import tech.powerjob.common.ContainerConstant;
 import net.lingala.zip4j.ZipFile;
 import org.apache.commons.io.FileUtils;
@@ -51,7 +52,7 @@ public class ContainerTemplateGenerator {
         String line;
         StringBuilder buffer = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(pomPath))) {
-            while ((line = br.readLine()) != null) {
+            while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
 
                 if (line.contains("<groupId>groupId</groupId>")) {
                     buffer.append("    <groupId>").append(group).append("</groupId>");
@@ -82,7 +83,7 @@ public class ContainerTemplateGenerator {
         buffer.setLength(0);
 
         try (BufferedReader br = new BufferedReader(new FileReader(springXMLPath))) {
-            while ((line = br.readLine()) != null) {
+            while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
 
                 if (line.contains("<context:component-scan base-package=\"")) {
                     buffer.append("    <context:component-scan base-package=\"").append(packageName).append("\"/>");
